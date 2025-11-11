@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { PageTransition } from '../components/PageTransition';
@@ -9,11 +9,24 @@ export function AIRecommend() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState('');
   const [displayedResult, setDisplayedResult] = useState(''); 
+  const [dotCount, setDotCount] = useState(1);
 
   const typingIdRef = useRef(0);
 
-  const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+  useEffect(() => {
+    if (!isLoading) {
+      setDotCount(1);
+      return;
+    }
+  
+    const interval = setInterval(() => {
+      setDotCount((prev) => (prev % 3) + 1);
+  }, 500);
 
+  return () => clearInterval(interval);
+  }, [isLoading]);
+
+  const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
   const startTyping = async (text: string, speed = 25) => {
 
     const safeText = text ?? '';
@@ -79,9 +92,9 @@ export function AIRecommend() {
           transition = {{ duration : 0.5 }}
         >
           <h1 className = "text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
-            오늘은 무슨일이 있었나요❓
+            오늘은 무슨일이 있었나요?
           </h1>
-          <p className = "text-gray-500 text-base">A.I가 상황에 맞는 영화를 추천해 드립니다❗</p>
+          <p className = "text-gray-500 text-base">A.I가 상황에 맞는 영화를 추천해 드립니다!</p>
         </motion.div>
 
         <motion.div
@@ -102,7 +115,7 @@ export function AIRecommend() {
             disabled={isLoading || !input.trim()}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-medium py-3"
           >
-            {isLoading ? '추천 중...' : '🎬 영화 추천받기'}
+            {isLoading ? `추천 중${'.'.repeat(dotCount)}` : '영화 추천받기'}
           </Button>
         </motion.div>
 

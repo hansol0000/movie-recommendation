@@ -65,7 +65,7 @@ export function Search() {
             animate = {{ opacity : 1, y : 0 }}
             transition = {{ duration : 0.5 }}
           >
-            영화 검색 🔍
+            영화 검색 
           </motion.h2>
 
           {/* 검색창 */}
@@ -87,18 +87,18 @@ export function Search() {
               />
             </div>
             <Button type = "submit" disabled = {isLoading}>
-              {isLoading ? '검색 중...' : '검색'}
+              {isLoading ? '검색 중' : '검색'}
             </Button>
           </motion.form>
 
           {/* 검색 결과 출력 */}
           {!hasSearched ? (
             <div className = "border rounded-lg p-10 text-center text-gray-400 bg-white">
-              영화를 검색해보세요 🎬
+              영화를 검색해보세요! 
             </div>
           ) : searchResults.length === 0 ? (
             <div className = "border rounded-lg p-10 text-center text-gray-400 bg-white">
-              검색 결과가 없습니다 😢
+              검색 결과가 없습니다.
             </div>
           ) : (
             <>

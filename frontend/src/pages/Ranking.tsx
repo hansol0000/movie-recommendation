@@ -18,6 +18,20 @@ export function Ranking() {
     const [rankingData, setRankingData] = useState<MovieRank[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [animationKey, setAnimationKey] = useState(0);
+    const [dotCount, setDotCount] = useState(1);
+
+    useEffect(() => {
+        if (!isLoading) {
+            setDotCount(1);
+            return;
+        }
+
+        const interval = setInterval(() => {
+            setDotCount((prev) => (prev % 3) + 1);
+        }, 500);
+
+        return () => clearInterval(interval);
+    }, [isLoading]);
 
     // 플랫폼 변경 할 때 순위 데이터 가져오기
     useEffect(() => {
@@ -63,7 +77,7 @@ export function Ranking() {
                         animate = {{ opacity : 1, y : 0 }}
                         transition = {{ duration : 0.5 }}
                     >
-                        영화 순위 📈
+                        영화 순위
                     </motion.h2>
 
                     {/* 플랫폼 선택 버튼 */}
@@ -83,7 +97,7 @@ export function Ranking() {
                     {/* 순위 목록 */}
                     <div className = "space-y-4">
                         {isLoading ? (
-                            <p className = "text-center text-gray-400 py-10">불러오는 중...</p>
+                            <p className = "text-center text-gray-400 py-10">불러오는 중{'.'.repeat(dotCount)}</p>
                         ) : rankingData.length === 0 ? (
                             <p className = "text-center text-gray-400 py-10">
                             {selectedPlatform} 데이터를 불러오는 중 문제가 발생했습니다.
@@ -136,7 +150,7 @@ export function Ranking() {
 
                         {/* 하단 문구 */}
                         <div className = 'mt-10 text-center text-gray-400 text-sm'>
-                            {selectedPlatform} 순위 TOP 1️⃣~🔟
+                            {selectedPlatform} 순위 TOP 10
                         </div>
                     </div>
                 </div>

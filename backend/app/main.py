@@ -5,9 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 # 내부 묘듈 import 하기
-from .Hugging_Face import analyze_emotion
-from .OpenAi_API import movie_recommend
-from .scraper import get_tmdb_rank, get_kobis_rank, get_imdb_rank
+from Hugging_Face import analyze_emotion
+from OpenAi_API import movie_recommend
+from scraper import get_tmdb_rank, get_kobis_rank, get_imdb_rank
 
 load_dotenv(dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")

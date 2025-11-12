@@ -61,10 +61,9 @@ def movie_recommend(emotion: str) -> str:
         f"이 감정이 기쁨이 나온 경우 "
         f"그 기분을 더 오래 지속하거나 즐겁게 확장시켜주는 실제 영화 제목 3편을 영어 원제(Original English title)로만 콤마로 구분해서 말해줘. "
         f"이 감정이 중립이 나온 경우 "
-        f"그냥 아무거나 좋으니까 랜덤으로 실제 영화 제목 3편을 영어 원제(Original English title)로만 콤마로 구분해서 말해줘. "
+        f"그냥 다양한 장르와 랜덤으로 실제 영화 제목 3편을 영어 원제(Original English title)로만 콤마로 구분해서 말해줘. "
         f"이 감정이 혐오, 두려움, 분노, 슬픔, 놀람이 나온 경우라면 "
         f"그 감정을 완화하거나 회복할 수 있도록 도와주는 영화 3편을 영어 원제(Original English title)로만 콤마로 구분해서 말해줘. "
-        f"예를 들어 joy이면 Inside Out, La La Land, Sing 이런 식으로. "
     )
 
     try:

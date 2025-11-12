@@ -18,7 +18,7 @@ translator = GoogleTranslator(source = 'ko', target = 'en')
 
 # 3. 감정 추출 함수 작성
 def analyze_emotion(text: str) -> str:
-    # 입력 문자열이 비어있거나 공백일 시 > 감정 분류 불가능 > "감정을 분류할 수 없습니다. 다시 입력해주세요." 문구 출력
+
     if not text.strip():
         return "감정을 분류할 수 없습니다. 다시 입력해주세요."
     
@@ -27,7 +27,7 @@ def analyze_emotion(text: str) -> str:
 
     # 2) 영어 감정 분석 수행
     result = emotion_analyze(translated_text)[0]
-    english_label = result["label"]
+    eng = result["label"]
 
     # 3) 영어 감정을 한국어로 매핑하기
     label = {
@@ -40,7 +40,7 @@ def analyze_emotion(text: str) -> str:
         "surprise" : "놀람"
     }
 
-    emotion_kr = label.get(english_label, english_label)
+    emotion_kr = label.get(eng, eng)
     return emotion_kr
 
 # 모듈 단독 실행 시 테스트 코드 실행

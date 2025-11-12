@@ -67,7 +67,7 @@ export function AIRecommend() {
       } else if (data.result) {
         finalText = String(data.result);
       } else {
-        finalText = '서버로부터 정상적인 답변을 받지 못했습니다.';
+        finalText = '서버로부터 답변을 받지 못했습니다.';
       }
 
       setResult(finalText);

@@ -6,19 +6,19 @@ export function Home() {
   const features = [
     {
       title : '영화 추천 받기',
-      description : 'A.I가 당신의 상황에 맞는 영화를 추천해줍니다!',
+      description : 'A.I가 당신의 상황에 맞는 영화를 추천해줍니다.',
       imageAlt : 'AI 추천 이미지',
       imageSrc : '/images/ai_recommend.png'
     },
     {
       title : '영화 검색 기능',
-      description : '추천 받은 영화에 대해 검색해보세요!',
+      description : '추천 받은 영화에 대해 검색해보세요.',
       imageAlt : '검색 이미지',
       imageSrc : '/images/search.png'
     },
     {
       title : '영화 순위 보기',
-      description : '추천 받은 영화가 맘에 들지 않으신가요? 다른 플랫폼의 영화 순위를 확인해보세요!',
+      description : '추천 받은 영화가 맘에 들지 않으신가요? 다른 플랫폼의 영화 순위를 확인해보세요.',
       imageAlt : '순위 이미지',
       imageSrc : '/images/ranking.png'
     },

@@ -80,11 +80,11 @@ def search_tmdb_poster(title : str, year : Optional[str] = None, api_key : Optio
         logger.warning(f"TMDB 포스터 검색 실패 ({title}): {e}")
         return None
 
-# TMDB 랭킹 가져오기 (기존 코드 유지)
+# TMDB 랭킹 가져오기 
 def get_tmdb_rank(api_key: Optional[str] = None, language: str = "ko-KR", page: int = 1) -> List[Dict]:
     api_key = api_key or TMDB_API_KEY
     if not api_key:
-        raise ValueError("TMDB API KEY 필요!")
+        raise ValueError("TMDB API KEY 필요")
     
     url = "https://api.themoviedb.org/3/movie/top_rated"
     params = {"api_key" : api_key, "language" : language, "page" : page}
@@ -115,11 +115,11 @@ def get_tmdb_rank(api_key: Optional[str] = None, language: str = "ko-KR", page: 
 def get_kobis_rank(api_key : Optional[str] = None, date : Optional[str] = None, 
                    fetch_posters : bool = True) -> List[Dict]:
 # 시간이 조금 걸림
-    api_key = api_key or KOBIS_API_KEY
+    api_key = KOBIS_API_KEY
     if not api_key:
         raise ValueError("KOBIS API KEY 필요!")
     
-    # KST로 어제를 계산해서 일간 순위 반환.
+    # KST로 어제를 계산해서 일간 박스오피스 순위 반환.
     if date is None:
         kst = timezone(timedelta(hours = 9))
         date = (datetime.now(kst) - timedelta(days = 1)).strftime("%Y%m%d")
@@ -141,7 +141,7 @@ def get_kobis_rank(api_key : Optional[str] = None, date : Optional[str] = None,
         # 포스터 검색 
         poster_url = None
         if fetch_posters and title:
-            logger.info(f"KOBIS: '{title}' 포스터 검색 중...")
+            logger.info(f"KOBIS: '{title}' 포스터 검색 중")
             poster_url = search_tmdb_poster(title, year)
             time.sleep(0.3)  
         
@@ -187,7 +187,7 @@ def get_imdb_rank(limit : int = 250) -> List[Dict]:
         if poster_tag and poster_tag.has_attr("src"):
             # IMDB 이미지 URL에서ㅍ추출
             raw_poster = poster_tag["src"]
-            # 원본 크기로 변경하기
+            # 원본 크기로 변경
             poster_url = raw_poster.split("._")[0] + "._V1_.jpg" if "._" in raw_poster else raw_poster
 
         output.append({
@@ -231,7 +231,7 @@ if __name__ == "__main__":
         print("\n")
 
         if KOBIS_API_KEY:
-            logger.info("KOBIS 데이터 가져오는 중 (포스터 검색 포함, 시간 소요됨)...")
+            logger.info("KOBIS 데이터 가져오는 중 (포스터 검색 포함, 시간 소요됨)")
             kobis = get_kobis_rank(fetch_posters=True)  #  포스터 검색 활성화
             logger.info("KOBIS 박스오피스 가져옴: %d개", len(kobis))
             for m in kobis[:10]:

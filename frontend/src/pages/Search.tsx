@@ -94,7 +94,7 @@ export function Search() {
           {/* 검색 결과 출력 */}
           {!hasSearched ? (
             <div className = "border rounded-lg p-10 text-center text-gray-400 bg-white">
-              영화를 검색해보세요! 
+              영화를 검색해보세요. 
             </div>
           ) : searchResults.length === 0 ? (
             <div className = "border rounded-lg p-10 text-center text-gray-400 bg-white">

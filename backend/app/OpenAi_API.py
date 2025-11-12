@@ -20,7 +20,7 @@ if not TMDB_API_KEY:
 # 3. OpenAI 클라이언트 초기화
 client = OpenAI(api_key = OPENAI_API_KEY)
 
-# TMDB로 실제 영화 데이터 불러오기
+# TMDB로 영화 데이터 불러오기
 def get_tmdb_movie(keyword : str, count : int = 3):
    
     def search_tmdb(query):
@@ -38,12 +38,12 @@ def get_tmdb_movie(keyword : str, count : int = 3):
             return title
         return []
     
-    # 영어로 검색
+    # 영어 검색
     result = search_tmdb(keyword)
     if result:
         return result
     
-    # 영어 실패시 한국어 번역으로 재검색
+    # 영어 실패시 한국어 번역 재검색
     translate_query = GoogleTranslator(source = 'en', target = 'ko').translate(keyword)
     result_ko = search_tmdb(translate_query)
     if result_ko:
@@ -52,7 +52,7 @@ def get_tmdb_movie(keyword : str, count : int = 3):
     
     return []
 
-# OpenAI GPT 모델을 이용해 감정 기반 영화 추천문을 생성
+# OpenAI GPT 모델을 이용 감정 기반 영화 추천문을 생성
 def movie_recommend(emotion: str) -> str:
     
     # 1. 감정에 어울리는 영화 키워드 생성
@@ -64,6 +64,7 @@ def movie_recommend(emotion: str) -> str:
         f"그냥 다양한 장르와 랜덤으로 실제 영화 제목 3편을 영어 원제(Original English title)로만 콤마로 구분해서 말해줘. "
         f"이 감정이 혐오, 두려움, 분노, 슬픔, 놀람이 나온 경우라면 "
         f"그 감정을 완화하거나 회복할 수 있도록 도와주는 영화 3편을 영어 원제(Original English title)로만 콤마로 구분해서 말해줘. "
+        f"가능하면 서로 다른 장르, 감독, 개봉 시기의 작품을 골라서 다양하게 추천해줘. "
     )
 
     try:

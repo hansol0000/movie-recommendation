@@ -31,7 +31,6 @@ app.add_middleware(
 @app.post("/recommend")
 def recommend_movie(data: dict = Body(...)):
     user_text = data.get('diary') or data.get('emotion', '')
-    
 
     if not user_text.strip():
         return {"error" : "텍스트를 입력해주세요."}
@@ -39,20 +38,20 @@ def recommend_movie(data: dict = Body(...)):
     try:
         print(f"[받은 입력] {user_text}")
 
-        # Hugging Face로 감정 분석
+        # Hugging Face 모델 감정 분석
         emotion = analyze_emotion(user_text)
         print(f"[분석된 감정] {emotion}")
 
         # 감정 분석 실패 확인
-        if emotion == "감정을 분류할 수 없습니다. 다시 입력해주세요!":
+        if emotion == "감정을 분류할 수 없습니다.":
             return {'error' : emotion}
         
-        # OpenAi로 본격적인 영화 추천
+        # OpenAi로 영화 추천
         recommend = movie_recommend(emotion)
         print(f'[추천 결과] {recommend[:100]}...')
 
         if recommend is None or not recommend:
-            return {'error' : '영화 추천 생성이 실패했습니다.'}
+            return {'error' : '영화 추천 생성 실패.'}
         
         recommend = str(recommend).replace('undefined', '').strip()
 
@@ -106,7 +105,7 @@ def search_movie(query : str = Query(..., description = "검색할 영화 제목
     ]
     return {"results": movies}
 
-# 영화 순위 기능 (각각의 플랫폼)
+# 영화 순위 기능 (각각의 웹사이트)
 @app.get("/rank/tmdb")
 def rank_tmdb():
     try:
@@ -128,14 +127,14 @@ def rank_tmdb():
 @app.get("/rank/kobis")
 def rank_kobis():
     try:
-        # fetch_posters = True로 포스터 검색 활성화
+        # 포스터 검색 활성화
         movies = get_kobis_rank(fetch_posters = True)
         return {
             "results": [
                 {
                     "title" : m["title"],
-                    "poster" : m["poster"],  
-                    "rating" : None,        # KOBIS 평점기능 x
+                    "poster" : m["poster"],     # 포스터 tmdb api 가져오기
+                    "rating" : None,            # KOBIS 평점기능 x
                     "rank" : m["rank"]
                 }
                 for m in movies[:10]

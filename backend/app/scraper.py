@@ -113,7 +113,7 @@ def get_tmdb_rank(api_key: Optional[str] = None, language: str = "ko-KR", page: 
 
 # KOBIS -> TMDB에서 포스터 가져오기 추가 (KOBIS API에 포스터 이미지를 따로 제공 X)
 def get_kobis_rank(api_key : Optional[str] = None, date : Optional[str] = None, 
-                   fetch_posters : bool = True, retry : int = 7) -> List[Dict]:
+                   fetch_posters : bool = True) -> List[Dict]:
 # 시간이 조금 걸림
     api_key = api_key or KOBIS_API_KEY
     if not api_key:

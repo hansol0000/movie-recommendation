@@ -20,3 +20,11 @@ Hugging Face Transformers
 1. AI 감정 기반 영화 추천
 2. 영화 순위 조회 (TMDB, KOBIS, IMDB)
 3. 영화 검색 기능 
+
+# 스크린샷
+<img width="1920" height="909" alt="스크린샷 2025-11-09 145814" src="https://github.com/user-attachments/assets/1a76e5b8-5198-4bef-8e60-815f7f30a428" />
+
+<img width="703" height="481" alt="스크린샷 2025-11-11 211312" src="https://github.com/user-attachments/assets/059fa4a4-e67d-475a-bc2e-c988d1c2a23f" />
+
+
+

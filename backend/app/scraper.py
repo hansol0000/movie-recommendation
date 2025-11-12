@@ -60,7 +60,6 @@ def search_tmdb_poster(title : str, year : Optional[str] = None, api_key : Optio
         "language" : "ko-KR"
     }
     
-    # 년도가 있으면 검색 정확도 향상
     if year:
         params["year"] = year
     
@@ -80,7 +79,6 @@ def search_tmdb_poster(title : str, year : Optional[str] = None, api_key : Optio
     except Exception as e:
         logger.warning(f"TMDB 포스터 검색 실패 ({title}): {e}")
         return None
-
 
 # TMDB 랭킹 가져오기 (기존 코드 유지)
 def get_tmdb_rank(api_key: Optional[str] = None, language: str = "ko-KR", page: int = 1) -> List[Dict]:
@@ -113,16 +111,15 @@ def get_tmdb_rank(api_key: Optional[str] = None, language: str = "ko-KR", page: 
         })
     return output
 
-
 # KOBIS -> TMDB에서 포스터 가져오기 추가 (KOBIS API에 포스터 이미지를 따로 제공 X)
 def get_kobis_rank(api_key : Optional[str] = None, date : Optional[str] = None, 
-                   fetch_posters : bool = True) -> List[Dict]:
+                   fetch_posters : bool = True, retry : int = 7) -> List[Dict]:
 # 시간이 조금 걸림
     api_key = api_key or KOBIS_API_KEY
     if not api_key:
         raise ValueError("KOBIS API KEY 필요!")
     
-    # KST로 어제를 계산해서 주간 순위 반환.
+    # KST로 어제를 계산해서 일간 순위 반환.
     if date is None:
         kst = timezone(timedelta(hours = 9))
         date = (datetime.now(kst) - timedelta(days = 1)).strftime("%Y%m%d")
@@ -188,9 +185,9 @@ def get_imdb_rank(limit : int = 250) -> List[Dict]:
         poster_tag = item.select_one("img.ipc-image")
         poster_url = None
         if poster_tag and poster_tag.has_attr("src"):
-            # IMDB 이미지 URL에서 고해상도 버전 추출
+            # IMDB 이미지 URL에서ㅍ추출
             raw_poster = poster_tag["src"]
-            # 썸네일 크기를 원본 크기로 변경하기
+            # 원본 크기로 변경하기
             poster_url = raw_poster.split("._")[0] + "._V1_.jpg" if "._" in raw_poster else raw_poster
 
         output.append({
@@ -205,7 +202,6 @@ def get_imdb_rank(limit : int = 250) -> List[Dict]:
         })
     return output
 
-
 # 소스 통합
 def integration_sources(*lists_of_movies : List[Dict]) -> List[Dict]:
     integration : List[Dict] = []
@@ -215,7 +211,6 @@ def integration_sources(*lists_of_movies : List[Dict]) -> List[Dict]:
             continue
         integration.extend(lst)
     return integration
-
 
 # 테스트
 if __name__ == "__main__":

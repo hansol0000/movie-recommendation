@@ -17,8 +17,7 @@ app = FastAPI(
     description = "영화 추천/검색/순위 통합 서버",
     version = "1.0.0"
 )
-
-# CORS 설정 (React 통신용)
+ 
 app.add_middleware(
     CORSMiddleware,
     allow_origins = ["*"],
@@ -160,7 +159,3 @@ def rank_imdb():
         }
     except Exception as e:
         return {"error": str(e)}
-    
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port = 8000)

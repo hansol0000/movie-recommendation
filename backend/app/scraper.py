@@ -23,7 +23,6 @@ if not KOBIS_API_KEY:
 logging.basicConfig(level = logging.INFO)
 logger = logging.getLogger("scraper")
 
-# 공통 requests (재시도 및 타임아웃 설정)
 def create_session(retries: int = 3, backoff_factor: float = 0.3, 
                    status_forcelist = (429, 500, 502, 503, 504)) -> requests.Session:
     sess = requests.Session()
@@ -37,7 +36,6 @@ def create_session(retries: int = 3, backoff_factor: float = 0.3,
     sess.mount("https://", adapter)
     sess.mount("http://", adapter)
 
-    # 신뢰 가능한 User-Agent 설정
     sess.headers.update({
         "User-Agent": "Mozilla/5.0 (compatible; MovieRankScraper/1.0; +https://yourdomain.example)"
     })
@@ -70,7 +68,6 @@ def search_tmdb_poster(title : str, year : Optional[str] = None, api_key : Optio
         results = data.get("results", [])
         
         if results:
-            # 첫 번째 결과의 포스터 반환
             poster_path = results[0].get("poster_path")
             if poster_path:
                 return f"https://image.tmdb.org/t/p/w500{poster_path}"
@@ -211,53 +208,3 @@ def integration_sources(*lists_of_movies : List[Dict]) -> List[Dict]:
             continue
         integration.extend(lst)
     return integration
-
-# 테스트
-if __name__ == "__main__":
-    try:
-        if TMDB_API_KEY:
-            tmdb_top = get_tmdb_rank(page=1)
-            logger.info("TMDB top 가져옴: %d개", len(tmdb_top))
-
-            for m in tmdb_top[:10]:
-                logger.info("TMDB sample: %s | %s | score=%s | poster=%s", 
-                           m["title"], m["year"], m["score"], 
-                           "O" if m["poster"] else "X")
-            time.sleep(1)
-        else:
-            logger.warning("TMDB_API_KEY 연동 X")
-            tmdb_top = []
-
-        print("\n")
-
-        if KOBIS_API_KEY:
-            logger.info("KOBIS 데이터 가져오는 중 (포스터 검색 포함, 시간 소요됨)")
-            kobis = get_kobis_rank(fetch_posters=True)  #  포스터 검색 활성화
-            logger.info("KOBIS 박스오피스 가져옴: %d개", len(kobis))
-            for m in kobis[:10]:
-                logger.info("KOBIS sample: %s | rank=%s | poster=%s | audiAcc=%s", 
-                           m["title"], m["rank"], 
-                           "O" if m["poster"] else "X",
-                           m["extra"].get("audiAcc"))
-            time.sleep(1)
-        else:
-            logger.warning("KOBIS_API_KEY 연동 X")
-            kobis = []
-
-        print("\n")
-
-        imdb = get_imdb_rank()
-        logger.info("IMDb top chart 가져옴: %d개", len(imdb))
-        for m in imdb[:10]:
-            logger.info("IMDb sample: %s | %s | score=%s | poster=%s", 
-                       m["title"], m["year"], m["score"],
-                       "O" if m["poster"] else "X")
-
-        all_movies = integration_sources(tmdb_top, kobis, imdb)
-        logger.info("총 통합 항목 수 : %d", len(all_movies))
-        
-        with_poster = sum(1 for m in all_movies if m.get("poster"))
-        logger.info("포스터 있는 영화 : %d개 / %d개", with_poster, len(all_movies))
-    
-    except Exception as e:
-        logger.exception("스크래핑 실행 중 예외 발생: %s", e)                  

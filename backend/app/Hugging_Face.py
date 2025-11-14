@@ -6,30 +6,30 @@
 from transformers import pipeline
 from deep_translator import GoogleTranslator
 
-# 1.분석 파이프라인 초기화 (pipeline()을 사용해 특정 테스크에 맞는 모델을 로드하고 실행을 간소화)
+# pipeline 사용해 모듈 호출
 emotion_analyze = pipeline(
     "text-classification",                                   # 테스크 유형 : 텍스트 분류
     model = "j-hartmann/emotion-english-distilroberta-base",
     return_all_scores = False                                # 가장 높은 확률의 감정 한개 반환 
 )
 
-# 2. 한국어 -> 영어 번역기 초기화
+# 한국어 -> 영어 번역기 초기화
 translator = GoogleTranslator(source = 'ko', target = 'en')
 
-# 3. 감정 추출 함수 작성
+# 감정 추출 함수 작성
 def analyze_emotion(text: str) -> str:
 
     if not text.strip():
         return "감정을 분류할 수 없습니다. 다시 입력해주세요."
     
-    # 1) 한국어 문장을 영어로 번역
+    # 1. 한국어 문장을 영어로 번역
     translated_text = translator.translate(text)
 
-    # 2) 영어 감정 분석 수행
+    # 2. 영어 감정 분석 수행
     result = emotion_analyze(translated_text)[0]
     eng = result["label"]
 
-    # 3) 영어 감정을 한국어로 매핑하기
+    # 3. 영어 감정을 한국어로 매핑하기
     label = {
         "anger" : "분노",
         "disgust" : "혐오",
@@ -42,10 +42,3 @@ def analyze_emotion(text: str) -> str:
 
     emotion_kr = label.get(eng, eng)
     return emotion_kr
-
-# 모듈 단독 실행 시 테스트 코드 실행
-if __name__ == "__main__":
-    text = "직장상사가 또 나한테 뭐라했어. 너무 화가나!"
-    emotion = analyze_emotion(text)
-    print(f"입력 문장 : {text}")
-    print(f"감정 분석 결과: {emotion}")

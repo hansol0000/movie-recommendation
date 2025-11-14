@@ -122,10 +122,3 @@ def movie_recommend(emotion: str) -> str:
     final = desc_resp.choices[0].message.content.strip()
     print(f"[최종 추천 결과] 길이 : {len(final)}자")
     return final
-
-# 테스트
-if __name__ == "__main__":
-    test = "기쁨"
-    print("테스트 실행 감정 : ", test)
-    result = movie_recommend(test)
-    print(result)
